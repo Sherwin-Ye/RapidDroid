@@ -5,7 +5,7 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 
-import com.sherwin.rapid.base.framework.util.LogUtil;
+import com.sherwin.rapid.base.util.LogUtil;
 
 import java.util.Iterator;
 import java.util.List;

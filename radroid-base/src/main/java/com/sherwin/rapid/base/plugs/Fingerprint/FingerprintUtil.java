@@ -1,10 +1,10 @@
 package com.sherwin.rapid.base.plugs.Fingerprint;
 
 import android.app.KeyguardManager;
+import android.content.Context;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
 
-import com.sherwin.rapid.base.framework.app.GlobalApplication;
 
 /**
  * Created by leafact on 2016/12/21.
@@ -13,14 +13,14 @@ import com.sherwin.rapid.base.framework.app.GlobalApplication;
 public class FingerprintUtil {
     public static CancellationSignal cancellationSignal;
 
-    public static void callFingerPrint(final OnCallBackListenr listener) {
-        FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(GlobalApplication.getInstance());
+    public static void callFingerPrint(Context context, final OnCallBackListenr listener) {
+        FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(context);
         if (!managerCompat.isHardwareDetected()) { //判断设备是否支持
             if (listener != null)
                 listener.onSupportFailed();
             return;
         }
-        KeyguardManager keyguardManager = (KeyguardManager) GlobalApplication.getInstance().getSystemService(GlobalApplication.getInstance().KEYGUARD_SERVICE);
+        KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(context.KEYGUARD_SERVICE);
         if (!keyguardManager.isKeyguardSecure()) {//判断设备是否处于安全保护中
             if (listener != null)
                 listener.onInsecurity();

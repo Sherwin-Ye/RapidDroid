@@ -5,7 +5,7 @@ import android.graphics.Matrix;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-import com.sherwin.rapid.base.framework.util.TerminalUtil;
+import com.sherwin.rapid.base.util.Terminal.TerminalUtil;
 
 /**
  * 自定义实现的3D翻转效果的工具类

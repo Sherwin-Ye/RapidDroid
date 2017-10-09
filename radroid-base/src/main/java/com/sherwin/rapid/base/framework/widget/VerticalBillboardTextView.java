@@ -10,7 +10,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.sherwin.rapid.base.framework.util.LogUtil;
+import com.sherwin.rapid.base.util.LogUtil;
 
 import java.util.List;
 

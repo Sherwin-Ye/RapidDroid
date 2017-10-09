@@ -3,7 +3,7 @@ package com.sherwin.rapid.base.framework.widget.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 
-import com.sherwin.rapid.base.framework.util.LogUtil;
+import com.sherwin.rapid.base.util.LogUtil;
 
 /**
  * Created by Sherwin.Ye on 2016/12/5.11:06
