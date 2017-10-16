@@ -3,6 +3,7 @@ package com.sherwin.rapid.databinding.ui;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +21,9 @@ public abstract class BaseDataBindingFragment<T extends ViewDataBinding> extends
     public T mDataBinding;
 
     @Override
-    protected void setConentLayout() {
+    public void setContentLayout(@LayoutRes int layoutId) {
         if (rootView == null) {
-            mDataBinding = DataBindingUtil.inflate(layoutInflater, getContentLayout(), null, false);
+            mDataBinding = DataBindingUtil.inflate(layoutInflater, layoutId, null, false);
             rootView = mDataBinding.getRoot();
             rootView.setTag(mDataBinding);
         } else {

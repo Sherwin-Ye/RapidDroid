@@ -18,7 +18,7 @@ import com.sherwin.radroid.base.R;
  * @data 2016年5月5日 下午2:10:30
  * @desc ElectricityView.java
  */
-public class ElectricityView extends TextView {
+public class ElectricityViewOld extends TextView {
 
     private static final int COLOR_DEFAULT = Color.rgb(39, 39, 39);
 
@@ -41,6 +41,19 @@ public class ElectricityView extends TextView {
      * 标签背景颜色，包括填充色
      */
     private int mainColor = COLOR_DEFAULT;
+    /**
+     * 标签内部背景颜色，如果是填充时无效
+     */
+    private int bgColor = Color.WHITE;
+
+    public int getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(int bgColor) {
+        this.bgColor = bgColor;
+        invalidate();
+    }
 
     /**
      * 得到label背景颜色
@@ -84,24 +97,19 @@ public class ElectricityView extends TextView {
     }
 
     public void setPower(float power) {
-        if (power < 0) {
-            power = 0;
-        } else if (power > 1) {
-            power = 1;
-        }
         this.power = power;
         invalidate();
     }
 
-    public ElectricityView(Context context) {
+    public ElectricityViewOld(Context context) {
         this(context, null);
     }
 
-    public ElectricityView(Context context, AttributeSet attrs) {
+    public ElectricityViewOld(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ElectricityView(Context context, AttributeSet attrs, int defStyle) {
+    public ElectricityViewOld(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs, defStyle);
     }
@@ -112,13 +120,9 @@ public class ElectricityView extends TextView {
                 R.styleable.ElectricityView, defStyle, 0);
         border = typedArray.getDimensionPixelSize(R.styleable.ElectricityView_electric_border_width, dp2px(getContext(), 1));
         radio = typedArray.getDimensionPixelSize(R.styleable.ElectricityView_electric_radius, dp2px(getContext(), 2));
+        bgColor = typedArray.getColor(R.styleable.ElectricityView_electric_bg_color, Color.WHITE);
         mainColor = typedArray.getColor(R.styleable.ElectricityView_electric_main_color, COLOR_DEFAULT);
         power = typedArray.getFloat(R.styleable.ElectricityView_electric_power, 0.0f);
-        if (power < 0) {
-            power = 0;
-        } else if (power > 1) {
-            power = 1;
-        }
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setTextSize(getTextSize());
@@ -137,36 +141,43 @@ public class ElectricityView extends TextView {
     @Override
     protected void onDraw(Canvas canvas) {
         //		super.onDraw(canvas);
-
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
+        int bodyWidth = width - border;
+        int powerWidth = width - border * 5;
+        int powerHeight = height - border * 4;
+        RectF ovalf = new RectF(0, 0, bodyWidth, height);// 设置个新的长方形
+        mPaint.setColor(mainColor);
+        mPaint.setAntiAlias(true);// 设置画笔的锯齿效果
+
+        //		if (!isFilled) {
+        //			//  绘制一个多边形  矩形边框
+        //			mPaint.setStyle(Paint.Style.STROKE);//设置空心
+        //		} else {
+        //			//  绘制一个多边形  矩形填充
+        //			mPaint.setStyle(Paint.Style.FILL);
+        //		}
+        mPaint.setStyle(Paint.Style.FILL);
+        canvas.drawRoundRect(ovalf, radio, radio, mPaint);//第二个参数是x半径，第三个参数是y半径
+
+        RectF ovalf2 = new RectF(border, border, bodyWidth - border, height - border);// 设置个新的长方形
+        mPaint.setColor(bgColor);
+        float radioIn = radio - 2f;
+        if (radioIn < 0) {
+            radioIn = 0;
+        }
+        canvas.drawRoundRect(ovalf2, radioIn, radioIn, mPaint);//第二个参数是x半径，第三个参数是y半径
 
         mPaint.setColor(mainColor);
 
-        // 画边框
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(border);
-        mPaint.setAntiAlias(true);// 设置画笔的锯齿效果
-
-        int bodyWidth = width - border; // 电量主体部分的宽度，不包括正极标志矩形部分，正极矩形宽度为border，高度为height/3
-        int bodyHeight = height; // 电量主体部分的高度
-        RectF ovalf = new RectF(border/2, border/2, bodyWidth - border/2, bodyHeight - border/2);// 设置个新的长方形，边框以线中间为基准计算
-        canvas.drawRoundRect(ovalf, radio, radio, mPaint);//第二个参数是x半径，第三个参数是y半径
-
-        // 画正极图标
-        mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setStrokeWidth(0);
-        mPaint.setAntiAlias(true);// 设置画笔的锯齿效果
-
         RectF rightRect = new RectF(bodyWidth, height * 1 / 3, width, height * 2 / 3);// 设置个新的长方形
         canvas.drawRect(rightRect, mPaint);
-
-        // 画电量百分比
-
-        int powerWidth = bodyWidth - border * 4; // 显示电量百分比部分宽度
-        int powerHeight = bodyHeight - border * 4; // 显示电量百分比部分高度
-
-        RectF powerRect = new RectF(border * 2, border * 2, border*2 + powerWidth * power, border * 2 + powerHeight);// 设置个新的长方形
+        if (power < 0) {
+            power = 0;
+        } else if (power > 1) {
+            power = 1;
+        }
+        RectF powerRect = new RectF(border + border, border + border, border + border + powerWidth * power, border + border + powerHeight);// 设置个新的长方形
         canvas.drawRect(powerRect, mPaint);
 
         super.onDraw(canvas);

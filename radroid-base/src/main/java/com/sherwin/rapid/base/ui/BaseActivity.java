@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.view.WindowManager;
 
 import com.sherwin.rapid.base.framework.app.AppManager;
 import com.sherwin.rapid.base.plugs.permission.PermissionGen;
+import com.sherwin.rapid.base.ui.annotation.RadroidInjectUtils;
 
 
 /**
@@ -90,14 +92,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
         }
     }
 
-
-    /**
-     * 默认使用默认的方式设置布局
-     */
-    protected void setContentLyout(){
-        setContentView(getContentLayout());
-    }
-
     /**
      * 加载布局前执行
      */
@@ -124,6 +118,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
 
     }
 
+    /**
+     * 默认使用默认的方式设置布局
+     */
+    @Override
+    public void setContentLayout(@LayoutRes int layoutId){
+        setContentView(layoutId);
+    }
+
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -131,7 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
         // 创建Activity 并压入栈顶
         AppManager.getAppManager().addActivity(this);
         beforeLoadContent();
-        setContentLyout(); // 设置布局
+        RadroidInjectUtils.inject(this);// 设置布局
         initView(bundle);
         initListener();
         initData();

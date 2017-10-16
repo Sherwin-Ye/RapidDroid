@@ -12,7 +12,7 @@ import com.sherwin.rapid.base.util.LogUtil;
  */
 public class RapidDroid {
     public static Application application;
-    public static boolean isDebug = false;
+    public static boolean debug = false;
     public static int logLevel = LogUtil.LEVEL_DEFAULT;
 
     /**
@@ -22,14 +22,14 @@ public class RapidDroid {
      */
     public static void init(Application application,boolean isDebug){
         RapidDroid.application = application;
-        RapidDroid.isDebug = isDebug;
+        RapidDroid.debug = isDebug;
         initConfOfLog();
     }
     /**
      * 初始化日志等级
      */
     private static void initConfOfLog() {
-        if (isDebug) {
+        if (debug) {
             logLevel = LogUtil.DEBUG;
         } else {
             logLevel = LogUtil.LEVEL_DEFAULT;

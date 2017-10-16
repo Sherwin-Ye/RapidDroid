@@ -1,6 +1,7 @@
 package com.sherwin.rapid.base.ui;
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 
 /**
  * @author Sherwin.Ye 674718661@qq.com
@@ -14,10 +15,11 @@ public interface IBaseUI {
     void beforeLoadContent();
 
     /**
-     * 设置资源
+     * 设置布局资源
+     * @param layoutId
      * @return
      */
-    int getContentLayout();
+    void setContentLayout(@LayoutRes int layoutId);
 
     /**
      * 初始化控件信息

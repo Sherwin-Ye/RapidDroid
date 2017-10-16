@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.sherwin.rapid.base.ui.annotation.RadroidInjectUtils;
 
 /**
  * @author Sherwin.Ye 674718661@qq.com
@@ -30,17 +33,14 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         layoutInflater = inflater;
         beforeLoadContent();
-        setConentLayout();
+        RadroidInjectUtils.inject(this);
         return rootView;
     }
 
-    /**
-     * 设置layout
-     *
-     */
-    protected void setConentLayout() {
+    @Override
+    public void setContentLayout(@LayoutRes int layoutId) {
         if (rootView == null) {
-            rootView = layoutInflater.inflate(getContentLayout(), null);
+            rootView = layoutInflater.inflate(layoutId, null);
         } else {
             ViewGroup viewGroup = (ViewGroup) rootView.getParent();
             if (viewGroup != null) {
@@ -48,6 +48,7 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
             }
         }
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

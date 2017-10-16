@@ -2,6 +2,7 @@ package com.sherwin.rapid.databinding.ui;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.support.annotation.LayoutRes;
 
 import com.sherwin.rapid.base.ui.BaseActivity;
 
@@ -14,9 +15,7 @@ public abstract class BaseDataBindingActivity<T extends ViewDataBinding> extends
     public T mDataBinding;
 
     @Override
-    protected void setContentLyout() {
-        mDataBinding = DataBindingUtil.setContentView(this, getContentLayout());
+    public void setContentLayout(@LayoutRes int layoutId) {
+        mDataBinding = DataBindingUtil.setContentView(this, layoutId);
     }
-
-
 }
